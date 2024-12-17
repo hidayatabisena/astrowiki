@@ -1,0 +1,75 @@
+---
+import WikiLayout from '../layouts/WikiLayout.astro';
+import { Image as AssetImage } from 'astro:assets';
+---
+
+<WikiLayout title="Welcome">
+  <article>
+    <h1 id="title">Good People, Good Knowledge</h1>
+    
+    <div class="my-8">
+      <AssetImage
+        src="https://res.cloudinary.com/moyadev/image/upload/v1730622967/sena/delibakes_a1o5rl.jpg"
+        alt="Welcome Image"
+        width={800}
+        height={400}
+        class="rounded-lg shadow-lg w-full object-cover"
+        loading="eager"
+      />
+    </div>
+
+    <p>
+      This is your custom knowledge repository created using Astro.js. Begin including your material by adding Markdown files in the <code>src/pages/wiki/</code> directory Hansena's personal Wiki.
+    </p>
+
+    <h2 id="features">Features</h2>
+    <ul>
+      <li>📝 Markdown-based content</li>
+      <li>🔍 Full-text search</li>
+      <li>🌓 Light/Dark mode</li>
+      <li>📱 Responsive design</li>
+      <li>🏷️ Category organization</li>
+    </ul>
+
+    <h2 id="getting-started">Getting Started</h2>
+    <ol>
+      <li>Create new .md files in the <code>src/pages/wiki/</code> directory</li>
+      <li>Add frontmatter with title and category</li>
+      <li>Write your content using Markdown</li>
+      <li>Use the sidebar to navigate between pages</li>
+    </ol>
+
+    <h2 id="ai-assistance">AI Assistance</h2>
+    <ol>
+      <li><strong>Mistral AI</strong>: Ask questions and get answers</li>
+      <li>Specific Usecases: <strong>Codestral</strong> from <strong>Mistral AI</strong></li>
+      <li><strong>Windsurf</strong> text editor for post production</li>
+      <li>Experimental: <strong>Qwen 2.5 Coder 32B</strong></li>
+    </ol>
+
+    <h2 id="system-info">System Information Script</h2>
+    <p>
+      This is a script that provides system information about your UNIX based system. It includes details such as the operating system, CPU, memory, storage, and network configuration. The script is written in <code>Bash</code> and can be run on any platform that has Bash installed.
+    </p>
+    
+    <div class="gist-container">
+      <script is:inline src="https://gist.github.com/hidayatabisena/5d3908e01d165f47bbbf02c2f68941f0.js"></script>
+    </div>
+
+    <style>
+      .gist-container {
+        margin: 1.5rem 0;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      }
+      /* Optional: Customize Gist appearance */
+      :global(.gist) {
+        font-size: 0.9rem;
+      }
+      :global(.gist .highlight) {
+        background: #f8f8f8;
+      }
+    </style>
+  </article>
+</WikiLayout>

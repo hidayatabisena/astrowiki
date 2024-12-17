@@ -1,0 +1,35 @@
+---
+const pages = await Astro.glob('../pages/wiki/*.md');
+const categories = [...new Set(pages.map(page => page.frontmatter.category))].sort();
+
+console.log('Found pages:', pages.length);
+console.log('Categories:', categories);
+---
+
+<aside class="drawer-side z-40">
+  <label for="drawer" class="drawer-overlay"></label>
+  <div class="bg-base-200 w-80 min-h-screen p-4">
+    <div class="font-bold text-2xl mb-6">Hansena Wiki</div>
+    
+    <div class="space-y-4">
+      {categories.map(category => (
+        <div class="space-y-2">
+          <h3 class="font-semibold text-lg">{category}</h3>
+          <ul class="menu">
+            {pages
+              .filter(page => page.frontmatter.category === category)
+              .sort((a, b) => a.frontmatter.title.localeCompare(b.frontmatter.title))
+              .map(page => (
+                <li>
+                  <a href={page.url} class="link">
+                    {page.frontmatter.title}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</aside>

@@ -1,0 +1,86 @@
+---
+import Sidebar from '../components/Sidebar.astro';
+import ThemeToggle from '../components/ThemeToggle';
+import Search from '../components/Search';
+import TableOfContents from '../components/TableOfContents';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title} - Hansena's Personal Wiki</title>
+  </head>
+  <body class="min-h-screen bg-base-100">
+    <div class="drawer">
+      <input id="drawer" type="checkbox" class="drawer-toggle" />
+      
+      <div class="drawer-content flex flex-col">
+        <!-- Navbar -->
+        <div class="navbar bg-base-200 sticky top-0 z-30 w-full shadow-sm">
+          <div class="flex-none">
+            <label for="drawer" class="btn btn-square btn-ghost">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-5 h-5 stroke-current">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+              </svg>
+            </label>
+          </div>
+          <div class="flex-1">
+            <a href="/" class="text-xl font-semibold ml-2 hover:opacity-75 transition-opacity flex items-center gap-2">
+              Hansena Wiki
+              <svg width="25" height="25" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M163.008 18.929c1.944 2.413 2.935 5.67 4.917 12.181l43.309 142.27a180.277 180.277 0 00-51.778-17.53l-28.198-95.29a3.67 3.67 0 00-7.042.01l-27.857 95.232a180.225 180.225 0 00-52.01 17.557l43.52-142.281c1.99-6.502 2.983-9.752 4.927-12.16a15.999 15.999 0 016.484-4.798c2.872-1.154 6.271-1.154 13.07-1.154h31.085c6.807 0 10.211 0 13.086 1.157a16.004 16.004 0 016.487 4.806z" fill="currentColor"></path>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M168.19 180.151c-7.139 6.105-21.39 10.268-37.804 10.268-20.147 0-37.033-5.704-41.513-13.414-1.602 4.754-2.011 10.196-2.011 13.914 0 0-1.081 16.126 11.318 21.48 3.838-7.021 11.647-11.848 20.652-11.848 13.088 0 23.697 10.691 23.697 23.779 0 4.914-1.524 9.494-4.13 13.278 44.846-3.234 65.723-34.114 65.723-50.418 0-2.888-.343-5.827-1.003-8.698-11.829-2.459-24.062-7.401-34.929-15.41z" fill="currentColor"></path>
+              </svg>
+            </a>
+          </div>
+          <div class="flex-none">
+            <div class="flex gap-2">
+              <Search client:load />
+              <a
+                href="https://github.com/hidayatabisena?tab=repositories"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-ghost btn-circle"
+                title="GitHub Repositories"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+                </svg>
+              </a>
+              <ThemeToggle client:load />
+            </div>
+          </div>
+        </div>
+
+        <!-- Main content -->
+        <main class="flex-1 p-6 container mx-auto">
+          <div class="mb-6">
+            <h1 class="text-3xl font-bold">{title}</h1>
+          </div>
+          <div class="grid grid-cols-1 lg:grid-cols-[1fr,16rem] gap-6">
+            <article class="prose prose-lg max-w-none">
+              <slot />
+            </article>
+            <aside class="hidden lg:block">
+              <div class="sticky top-24">
+                <TableOfContents client:load />
+              </div>
+            </aside>
+          </div>
+        </main>
+      </div>
+
+      <!-- Sidebar -->
+      <Sidebar />
+    </div>
+  </body>
+</html>
