@@ -2,7 +2,7 @@
 
 I built this personal wiki to keep a record of learning and finding interesting links while working in the IT industry
 
-[![Screenshot](https://res.cloudinary.com/moyadev/image/upload/v1734467613/sena/astrowiki_ewp7cz.png)
+![Screenshot](https://res.cloudinary.com/moyadev/image/upload/v1734467613/sena/astrowiki_ewp7cz.png)
 
 ```sh
 npm create astro@latest -- --template basics
