@@ -1,19 +1,32 @@
-import { getCollection } from 'astro:content';
-import { writeFileSync, mkdirSync, existsSync } from 'fs';
-import { join } from 'path';
+import { writeFileSync, mkdirSync, existsSync, readdirSync, readFileSync } from 'fs';
+import { join, resolve } from 'path';
+import { fileURLToPath } from 'url';
+import matter from 'gray-matter';
+
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
 async function generateSearchIndex() {
   try {
-    // Get all wiki entries
-    const wikiEntries = await getCollection('wiki');
+    // Get path to wiki directory
+    const wikiDir = resolve(__dirname, '../../pages/wiki');
+    
+    // Read all markdown files
+    const files = readdirSync(wikiDir)
+      .filter(file => file.endsWith('.md'));
     
     // Create search index
-    const searchIndex = wikiEntries.map(entry => ({
-      title: entry.data.title,
-      slug: entry.slug,
-      category: entry.data.category,
-      url: `/wiki/${entry.slug}`,
-    }));
+    const searchIndex = files.map(file => {
+      const content = readFileSync(join(wikiDir, file), 'utf-8');
+      const { data } = matter(content);
+      const slug = file.replace('.md', '');
+      
+      return {
+        title: data.title,
+        slug,
+        category: data.category,
+        url: `/wiki/${slug}`,
+      };
+    });
 
     // Determine the output directory based on environment
     const outputDir = process.env.VERCEL 
