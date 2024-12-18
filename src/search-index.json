@@ -33,5 +33,25 @@
     "category": "Temuan Mingguan",
     "content": "---\ntitle: Example Wiki Page\ncategory: Temuan Mingguan\nlayout: ../../layouts/WikiLayout.astro\n---\n\n# Example Wiki Page\n\nThis is an example wiki page demonstrating the Markdown capabilities of your personal wiki.\n\n## Markdown Features\n\n### Basic Formatting\n\nYou can use **bold**, *italic*, and ~~strikethrough~~ text.\n\n### Lists\n\nUnordered list:\n- Item 1\n- Item 2\n- Item 3\n\nOrdered list:\n1. First item\n2. Second item\n3. Third item\n\n### Code Blocks\n\n```javascript\nfunction hello() {\n  console.log('Hello, Wiki!');\n}\n```\n\n### Tables\n\n| Header 1 | Header 2 |\n|----------|----------|\n| Cell 1   | Cell 2   |\n| Cell 3   | Cell 4   |\n\n### Blockquotes\n\n> This is a blockquote.\n> It can span multiple lines.\n\n### Links\n\nYou can create [links to other pages](/) or external websites.\n\n## Next Steps\n\n1. Create more pages in the `src/pages/wiki/` directory\n2. Organize them using categories in the frontmatter\n3. Link between pages using relative URLs\n4. Use the search functionality to find content",
     "url": "/wiki/example"
+  },
+  {
+    "title": "Swift Dates Leading Zero",
+    "slug": "dateswift",
+    "category": "Gist Github",
+    "content": "---\ntitle: Swift Dates Leading Zero\ncategory: Gist Github\nlayout: ../../layouts/WikiLayout.astro\n---\n\n# Swift Dates Leading Zero\n\n```swift\nimport Foundation\n\nlet date = Date()\nlet dayFormatter = DateFormatter()\ndayFormatter.timeZone = TimeZone.current\ndayFormatter.locale = Locale.current\ndayFormatter.dateFormat = \"d\"\n\nlet monthYearFormatter = DateFormatter()\nmonthYearFormatter.timeZone = TimeZone.current\nmonthYearFormatter.locale = Locale.current\nmonthYearFormatter.dateFormat = \"MMMM' in the year of 'yyyy\"\n```\n",
+    "url": "/wiki/dateswift"
+  },
+  {
+    "title": "Swift Together AI",
+    "slug": "togetherswift",
+    "category": "Gist Github",
+    "content": "---\ntitle: Swift Together AI\ncategory: Gist Github\nlayout: ../../layouts/WikiLayout.astro\n---\n\n# Swift Together AI\n---\ntldr;\n[Link to the gist](https://ai.moyahexagon.com/shares/4378dd41-8aac-43f3-9cf0-2dc938586495)\n\n```swift\nimport UIKit\nimport Foundation\n\n@MainActor\nclass TogetherAIRequest {\n    private let apiKey = \"YOUR_API_KEY\"\n    private let apiUrl = \"https://api.together.xyz/v1/chat/completions\"\n```\n",
+    "url": "/wiki/togetherswift"
+  },
+  {
+    "title": "UI Color Extension",
+    "slug": "colorextswift",
+    "category": "Gist Github",
+    "content": "---\ntitle: UI Color Extension\ncategory: Gist Github\nlayout: ../../layouts/WikiLayout.astro\n---\n\n# Swift Color Extension\n\ntldr;\n[Link to the gist](https://ai.moyahexagon.com/shares/74d8a1a4-a1b1-4484-b48d-9c91ca9827c9)\n\n```swift\nimport Foundation\nimport UIKit\n\nextension UIColor {\n    /// #CBFB5E\n    static var brand1: UIColor = UIColor(rgb: 0xCBFB5E)\n    /// #0E0B1F\n    static var brand2: UIColor = UIColor(rgb: 0x0E0B1F)\n```\n"
   }
 ]

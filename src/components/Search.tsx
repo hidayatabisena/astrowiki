@@ -47,6 +47,7 @@ export default function Search() {
         item.content.toLowerCase().includes(query.toLowerCase())
       ).map(item => ({
         ...item,
+        url: item.url || (item.slug ? `/wiki/${item.slug}` : 'default-url'), // Provide a default URL if missing
         snippet: getContentSnippet(item.content, query)
       }));
       setResults(filteredResults);
