@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import searchIndex from '../search-index.json';
 
 interface WikiPage {
+  snippet: any;
   url: string;
   title: string;
   category?: string;
