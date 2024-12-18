@@ -9,6 +9,22 @@ interface Props {
 }
 
 const { title } = Astro.props;
+
+// Fetch the search index data and populate window.wikiPages
+const fetchSearchIndex = async () => {
+  if (typeof window !== 'undefined') { // Check if in browser environment
+    try {
+      const response = await fetch(`${window.location.origin}/search-index.json`);
+      if (!response.ok) throw new Error('Failed to fetch search index');
+      const data = await response.json();
+      window.wikiPages = data;
+    } catch (error) {
+      console.error('Error fetching search index:', error);
+    }
+  }
+};
+
+fetchSearchIndex();
 ---
 
 <!doctype html>

@@ -25,13 +25,17 @@ export default function Search() {
       return;
     }
 
+    console.log('Search query:', query); // Log the search query
+
     const fuse = new Fuse(window.wikiPages || [], {
       keys: ['title', 'category', 'content'],
       threshold: 0.3,
       includeMatches: true,
     });
 
-    setResults(fuse.search(query).map(result => result.item).slice(0, 5));
+    const searchResults = fuse.search(query).map(result => result.item).slice(0, 5);
+    console.log('Search results:', searchResults); // Log the search results
+    setResults(searchResults);
   }, [query]);
 
   return (

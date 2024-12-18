@@ -24,6 +24,7 @@ async function generateSearchIndex() {
         title: data.title,
         slug,
         category: data.category,
+        content, // Include the content of the markdown file
         url: `/wiki/${slug}`,
       };
     });
