@@ -1,0 +1,109 @@
+---
+import { getCollection } from 'astro:content';
+
+const allPages = await getCollection('wiki');
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class="relative">
+  <div class="form-control w-full">
+    <input 
+      type="text" 
+      id="search-input"
+      placeholder="Search wiki..." 
+      class="input input-bordered w-full"
+    />
+    <div 
+      id="search-results" 
+      class="absolute z-50 w-full mt-2 bg-base-100 rounded-lg shadow-lg border border-base-300 hidden"
+    >
+      <!-- Results will be populated here -->
+    </div>
+  </div>
+</div>
+
+<script define:vars={{ allPages }}>
+  const searchInput = document.getElementById('search-input');
+  const searchResults = document.getElementById('search-results');
+
+  if (searchInput && searchResults) {
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase();
+      
+      if (query.length < 2) {
+        searchResults.classList.add('hidden');
+        return;
+      }
+
+      const results = allPages
+        .filter(page => 
+          page.data.title.toLowerCase().includes(query) ||
+          page.body.toLowerCase().includes(query)
+        )
+        .slice(0, 5);
+
+      if (results.length > 0) {
+        searchResults.innerHTML = results
+          .map(page => {
+            const content = page.body;
+            const index = content.toLowerCase().indexOf(query);
+            let excerpt = '';
+            
+            if (index !== -1) {
+              const start = Math.max(0, index - 50);
+              const end = Math.min(content.length, index + 50);
+              excerpt = content.slice(start, end);
+              if (start > 0) excerpt = '...' + excerpt;
+              if (end < content.length) excerpt += '...';
+            }
+
+            return `
+              <a href="/wiki/${page.slug}" class="block p-3 hover:bg-base-200 first:rounded-t-lg last:rounded-b-lg">
+                <div class="font-medium">${page.data.title}</div>
+                ${page.data.category ? `<div class="text-sm opacity-60">${page.data.category}</div>` : ''}
+                ${excerpt ? `<div class="text-sm mt-1 opacity-70">${excerpt}</div>` : ''}
+              </a>
+            `;
+          })
+          .join('');
+        searchResults.classList.remove('hidden');
+      } else {
+        searchResults.innerHTML = '<div class="p-3">No results found</div>';
+        searchResults.classList.remove('hidden');
+      }
+    });
+
+    // Hide results when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+        searchResults.classList.add('hidden');
+      }
+    });
+
+    // Show results when focusing on input
+    searchInput.addEventListener('focus', () => {
+      if (searchInput.value.length >= 2) {
+        searchResults.classList.remove('hidden');
+      }
+    });
+  }
+</script>
+
+<style>
+  #search-results {
+    position: absolute;
+    background: var(--fallback-b1,oklch(var(--b1)/1));
+    border: 1px solid var(--fallback-bc,oklch(var(--bc)/.2));
+    border-radius: 0.5rem;
+    width: 100%;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 50;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  }
+</style>

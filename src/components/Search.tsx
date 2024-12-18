@@ -3,23 +3,21 @@ import Fuse from 'fuse.js';
 
 interface WikiPage {
   url: string;
-  frontmatter: {
-    title: string;
-    category: string;
-  };
+  title: string;
+  category?: string;
+  content: string;
+}
+
+declare global {
+  interface Window {
+    wikiPages: WikiPage[];
+  }
 }
 
 export default function Search() {
-  const [pages, setPages] = useState<WikiPage[]>([]);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<WikiPage[]>([]);
   const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(() => {
-    fetch('/search-index.json')
-      .then(res => res.json())
-      .then(data => setPages(data));
-  }, []);
 
   useEffect(() => {
     if (!query) {
@@ -27,19 +25,20 @@ export default function Search() {
       return;
     }
 
-    const fuse = new Fuse(pages, {
-      keys: ['frontmatter.title', 'frontmatter.category'],
+    const fuse = new Fuse(window.wikiPages || [], {
+      keys: ['title', 'category', 'content'],
       threshold: 0.3,
+      includeMatches: true,
     });
 
-    setResults(fuse.search(query).map(result => result.item));
-  }, [query, pages]);
+    setResults(fuse.search(query).map(result => result.item).slice(0, 5));
+  }, [query]);
 
   return (
     <div className="relative">
       <input
         type="text"
-        placeholder="Search..."
+        placeholder="Search wiki..."
         className="input input-bordered w-64"
         value={query}
         onChange={e => {
@@ -50,24 +49,23 @@ export default function Search() {
       />
 
       {isOpen && results.length > 0 && (
-        <div className="absolute top-full mt-2 w-full bg-base-100 shadow-lg rounded-lg p-2 z-50">
+        <div 
+          className="absolute z-50 w-96 mt-2 bg-base-100 rounded-lg shadow-lg border border-base-300"
+          onMouseDown={e => e.preventDefault()}
+        >
           {results.map((page, i) => (
             <a
               key={i}
               href={page.url}
-              className="block p-2 hover:bg-base-200 rounded"
+              className="block p-3 hover:bg-base-200 first:rounded-t-lg last:rounded-b-lg"
               onClick={() => setIsOpen(false)}
             >
-              <div className="font-medium">{page.frontmatter.title}</div>
-              <div className="text-sm opacity-70">{page.frontmatter.category}</div>
+              <div className="font-medium">{page.title}</div>
+              {page.category && (
+                <div className="text-sm opacity-60">{page.category}</div>
+              )}
             </a>
           ))}
-        </div>
-      )}
-
-      {isOpen && query && results.length === 0 && (
-        <div className="absolute top-full mt-2 w-full bg-base-100 shadow-lg rounded-lg p-4 z-50">
-          No results found
         </div>
       )}
     </div>
