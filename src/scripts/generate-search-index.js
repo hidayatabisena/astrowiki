@@ -7,8 +7,8 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
 async function generateSearchIndex() {
   try {
-    // Get path to wiki directory
-    const wikiDir = resolve(__dirname, '../../pages/wiki');
+    // Get absolute path to wiki directory
+    const wikiDir = resolve(__dirname, '../../src/pages/wiki');
     
     // Read all markdown files
     const files = readdirSync(wikiDir)
