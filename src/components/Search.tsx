@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import Fuse from 'fuse.js';
+import searchIndex from '../search-index.json';
 
 interface WikiPage {
   url: string;
   title: string;
   category?: string;
   content: string;
+  slug: string;
 }
 
 declare global {
@@ -19,58 +20,72 @@ export default function Search() {
   const [results, setResults] = useState<WikiPage[]>([]);
   const [isOpen, setIsOpen] = useState(false);
 
+  const getContentSnippet = (content: string, searchQuery: string, snippetLength: number = 100) => {
+    const lowerContent = content.toLowerCase();
+    const lowerQuery = searchQuery.toLowerCase();
+    const index = lowerContent.indexOf(lowerQuery);
+    
+    if (index === -1) return '';
+    
+    const start = Math.max(0, index - snippetLength / 2);
+    const end = Math.min(content.length, index + searchQuery.length + snippetLength / 2);
+    let snippet = content.slice(start, end);
+    
+    // Add ellipsis if we're not at the start/end
+    if (start > 0) snippet = '...' + snippet;
+    if (end < content.length) snippet = snippet + '...';
+    
+    return snippet;
+  };
+
   useEffect(() => {
-    if (!query) {
+    if (query) {
+      const filteredResults = searchIndex.filter(item => 
+        item.title.toLowerCase().includes(query.toLowerCase()) || 
+        item.category?.toLowerCase().includes(query.toLowerCase()) || 
+        item.content.toLowerCase().includes(query.toLowerCase())
+      ).map(item => ({
+        ...item,
+        snippet: getContentSnippet(item.content, query)
+      }));
+      setResults(filteredResults);
+    } else {
       setResults([]);
-      return;
     }
-
-    console.log('Search query:', query); // Log the search query
-
-    const fuse = new Fuse(window.wikiPages || [], {
-      keys: ['title', 'category', 'content'],
-      threshold: 0.3,
-      includeMatches: true,
-    });
-
-    const searchResults = fuse.search(query).map(result => result.item).slice(0, 5);
-    console.log('Search results:', searchResults); // Log the search results
-    setResults(searchResults);
   }, [query]);
 
   return (
-    <div className="relative">
-      <input
-        type="text"
-        placeholder="Search wiki..."
-        className="input input-bordered w-64"
-        value={query}
-        onChange={e => {
+    <div className="relative w-full">
+      <input 
+        type="text" 
+        placeholder="Search wiki..." 
+        value={query} 
+        onChange={(e) => {
           setQuery(e.target.value);
           setIsOpen(true);
         }}
-        onFocus={() => setIsOpen(true)}
+        className="w-full p-2 rounded border border-gray-300 focus:outline-none focus:border-blue-500"
       />
-
       {isOpen && results.length > 0 && (
-        <div 
-          className="absolute z-50 w-96 mt-2 bg-base-100 rounded-lg shadow-lg border border-base-300"
-          onMouseDown={e => e.preventDefault()}
-        >
-          {results.map((page, i) => (
-            <a
-              key={i}
-              href={page.url}
-              className="block p-3 hover:bg-base-200 first:rounded-t-lg last:rounded-b-lg"
-              onClick={() => setIsOpen(false)}
-            >
-              <div className="font-medium">{page.title}</div>
-              {page.category && (
-                <div className="text-sm opacity-60">{page.category}</div>
-              )}
-            </a>
+        <ul className="absolute w-full bg-white mt-1 rounded-lg shadow-lg border border-gray-200 max-h-96 overflow-y-auto z-50">
+          {results.map((result, index) => (
+            <li key={index} className="p-3 hover:bg-gray-100 border-b last:border-b-0">
+              <a href={result.url} className="block">
+                <div className="font-medium text-gray-900">{result.title}</div>
+                {result.category && (
+                  <div className="text-sm text-gray-600 mt-1">
+                    {result.category}
+                  </div>
+                )}
+                {result.snippet && (
+                  <div className="text-sm text-gray-600 mt-1">
+                    {result.snippet}
+                  </div>
+                )}
+              </a>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </div>
   );

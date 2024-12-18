@@ -1,0 +1,58 @@
+---
+const { code, lang } = Astro.props;
+---
+
+<div class="relative code-block-wrapper">
+  <div class="absolute right-2 top-2">
+    <button
+      class="copy-button bg-base-200 hover:bg-base-300 text-sm px-2 py-1 rounded"
+      onclick="copyCode(this)"
+    >
+      Copy
+    </button>
+  </div>
+  <pre class="code-block"><code class={`language-${lang}`}>{code}</code></pre>
+</div>
+
+<script is:inline>
+  function copyCode(button) {
+    const pre = button.parentElement.parentElement.querySelector('pre');
+    const code = pre.textContent;
+    
+    navigator.clipboard.writeText(code).then(() => {
+      button.textContent = 'Copied!';
+      setTimeout(() => {
+        button.textContent = 'Copy';
+      }, 2000);
+    }).catch((err) => {
+      console.error('Failed to copy:', err);
+      button.textContent = 'Failed';
+    });
+  }
+</script>
+
+<style>
+  .code-block-wrapper {
+    position: relative;
+    margin: 1rem 0;
+  }
+
+  .code-block {
+    max-width: 100%;
+    padding: 1rem;
+    padding-top: 2.5rem;
+    border-radius: 0.5rem;
+    background-color: #1e293b;
+    overflow-x: auto;
+  }
+
+  .code-block code {
+    display: block;
+    width: 100%;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-word;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    color: #e2e8f0;
+  }
+</style>

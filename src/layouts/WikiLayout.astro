@@ -3,6 +3,7 @@ import Sidebar from '../components/Sidebar.astro';
 import ThemeToggle from '../components/ThemeToggle';
 import Search from '../components/Search';
 import TableOfContents from '../components/TableOfContents';
+import CodeBlock from '../components/CodeBlock.astro';
 
 interface Props {
   title: string;
@@ -34,6 +35,67 @@ fetchSearchIndex();
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title} - Hansena's Personal Wiki</title>
+    <style>
+      /* Code block styles */
+      pre {
+        position: relative;
+        max-width: 100%;
+        margin: 1rem 0;
+        padding: 1rem;
+        background-color: #1e293b;
+        border-radius: 0.5rem;
+        overflow-x: auto;
+      }
+
+      pre code {
+        display: block;
+        width: 100%;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        white-space: pre-wrap !important;
+        word-wrap: break-word !important;
+        word-break: break-word !important;
+        color: #e2e8f0;
+      }
+
+      /* Ensure content doesn't overflow */
+      article {
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+
+      /* Scrollbar styles */
+      pre::-webkit-scrollbar {
+        height: 4px;
+      }
+
+      pre::-webkit-scrollbar-thumb {
+        background-color: rgba(156, 163, 175, 0.5);
+        border-radius: 2px;
+      }
+
+      pre::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      /* Code block copy button */
+      .copy-button {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        color: #e2e8f0;
+        background-color: rgba(255, 255, 255, 0.1);
+        border: none;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .copy-button:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+    </style>
   </head>
   <body class="min-h-screen bg-base-100">
     <div class="drawer">

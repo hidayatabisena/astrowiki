@@ -11,7 +11,8 @@ export default defineConfig({
     remarkPlugins: [remarkGfm],
     rehypePlugins: [rehypeSlug],
     shikiConfig: {
-      theme: 'dracula'
+      theme: 'dracula',
+      wrap: true
     }
   },
   image: {
