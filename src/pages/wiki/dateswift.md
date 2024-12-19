@@ -96,6 +96,3 @@ Fabulous.
 # Conclusion
 
 This code demonstrates how to use `DateFormatter` to format the current date into a custom string format. It separates the day of the month and the month/year into two different formats and then combines them into a single, readable string. This approach allows for flexible and localized date formatting, which can be particularly useful for applications that need to display dates in a user-friendly manner.
-
-
-
